@@ -1,0 +1,49 @@
+{% extends '@App/layout.html.twig' %}
+
+{% block body %}
+<section class="promo">
+    <table class="table__list">
+        <tr class="table__item table__item--header">
+            <td class="table__info table__info--first_name">
+                Имя
+            </td>
+            <td class="table__info">
+                Фамилия
+            </td>
+            <td class="table__info table__info--email">
+                E-mail
+            </td>
+            <td class="table__info">
+                Организация
+            </td>
+            <td class="table__info table__info--position">
+                Позиция
+            </td>
+            <td class="table__info table__info--phone">
+                Мобильный тел.
+            </td>
+            <td class="table__info table__info--phone">
+                Рабочий тел.
+            </td>
+            <td class="table__info table__info--phone">
+                Домашний тел.
+            </td>
+            <td class="table__info table__info--edit">
+                Параметры
+            </td>
+        </tr>
+    </table>
+</section>
+<section class="modal modal-help">
+    <form enctype="multipart/form-data" class="modal-form" action="" method="post" name="theform">
+        <div class="modal-massage">
+            <p></p>
+        </div>
+        <div class="modal-button">
+            <button type="submit" class="button button_delete">Удалить</button>
+            <button type="button" class="button close" OnClick="history.go(-1);">Отмена</button>
+        </div>
+    </form>
+</section>
+<div class="modal modal-overlay"></div>
+{% endblock %}

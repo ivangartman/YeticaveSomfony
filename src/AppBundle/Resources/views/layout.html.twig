@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/normalize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/style.css') }}">
+</head>
+
+<body>
+<header class="main-header">
+    <nav class="main-navigation">
+        <form class="main-header__search" method="get" action="" autocomplete="off">
+            <input type="search" name="search" placeholder="Введите имя или фимилию" value="">
+            <input class="main-header__search-btn" type="submit" name="find" value="Найти">
+        </form>
+        <div class="site-navigation">
+            <ul class="site-navigation-list">
+                <li class="nav__item--current"><a href="{{ path('homepage') }}">Список аккаунтов</a></li>
+                <li class="nav__item--current"><a href="">Добавить аккаунт</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="container">
+    {% block body %}
+    {% endblock %}
+</main>
+
+<script src="{{ asset('bundles/app/js/popup.js') }}"></script>
+</body>
+</html>
