@@ -1,49 +1,43 @@
 {% extends '@App/layout.html.twig' %}
 
 {% block body %}
-<section class="promo">
-    <table class="table__list">
-        <tr class="table__item table__item--header">
-            <td class="table__info table__info--first_name">
-                Имя
-            </td>
-            <td class="table__info">
-                Фамилия
-            </td>
-            <td class="table__info table__info--email">
-                E-mail
-            </td>
-            <td class="table__info">
-                Организация
-            </td>
-            <td class="table__info table__info--position">
-                Позиция
-            </td>
-            <td class="table__info table__info--phone">
-                Мобильный тел.
-            </td>
-            <td class="table__info table__info--phone">
-                Рабочий тел.
-            </td>
-            <td class="table__info table__info--phone">
-                Домашний тел.
-            </td>
-            <td class="table__info table__info--edit">
-                Параметры
-            </td>
-        </tr>
-    </table>
-</section>
-<section class="modal modal-help">
-    <form enctype="multipart/form-data" class="modal-form" action="" method="post" name="theform">
-        <div class="modal-massage">
-            <p></p>
+    <section class="promo">
+        <h2 class="promo__title">Нужен стафф для катки?</h2>
+        <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
+        <ul class="promo__list">
+            <?php foreach ($categories as $category): ?>
+            <li class="promo__item promo__item--<?= $category['code'] ?>">
+                <a class="promo__link" href="#"><?= htmlspecialchars($category['name']) ?></a>
+            </li>
+            <?php endforeach ?>
+        </ul>
+    </section>
+    <section class="lots">
+        <div class="lots__header">
+            <h2>Открытые лоты</h2>
         </div>
-        <div class="modal-button">
-            <button type="submit" class="button button_delete">Удалить</button>
-            <button type="button" class="button close" OnClick="history.go(-1);">Отмена</button>
-        </div>
-    </form>
-</section>
-<div class="modal modal-overlay"></div>
+        <ul class="lots__list">
+            <?php foreach ($lots as $lot): ?>
+            <li class="lots__item lot">
+                <div class="lot__image">
+                    <img src="<?= htmlspecialchars($lot['picture_url']) ?>" width="350" height="260" alt="<?= htmlspecialchars($lot['name_cat']) ?>">
+                </div>
+                <div class="lot__info">
+                    <span class="lot__category"><?= htmlspecialchars($lot['name_cat']) ?></span>
+                    <h3 class="lot__title"><a class="text-link" href="#"><?= htmlspecialchars($lot['name_lot']) ?></a></h3>
+                    <div class="lot__state">
+                        <div class="lot__rate">
+                            <span class="lot__amount">Стартовая цена</span>
+                            <span class="lot__cost"><?= htmlspecialchars(substr(price_format($lot['price']),0, -2)) ?><b class="rub">р</b></span>
+                        </div>
+                        <div class="lot__timer timer <?= timer_finishing($lot['date_end']) ? 'timer--finishing' : '' ?>">
+                            <?= timer($lot['date_end']) ?>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <?php endforeach ?>
+        </ul>
+    </section>
+
 {% endblock %}
