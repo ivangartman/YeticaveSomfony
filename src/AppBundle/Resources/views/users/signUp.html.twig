@@ -18,23 +18,23 @@
 
     <div class="form__item">
         {{ form_label(addUserForm.email) }}
-        {{ form_errors(addUserForm.email) }}
         {{ form_widget(addUserForm.email) }}
+        <span class="class_error">{{ form_errors(addUserForm.email) }}</span>
     </div>
     <div class="form__item">
-        {{ form_label(addUserForm.password) }}
-        {{ form_errors(addUserForm.password) }}
-        {{ form_widget(addUserForm.password) }}
+        {{ form_label(addUserForm.plainPassword) }}
+        {{ form_widget(addUserForm.plainPassword) }}
+        <span class="class_error">{{ form_errors(addUserForm.plainPassword) }}</span>
     </div>
     <div class="form__item">
         {{ form_label(addUserForm.name) }}
-        {{ form_errors(addUserForm.name) }}
         {{ form_widget(addUserForm.name) }}
+        <span class="class_error">{{ form_errors(addUserForm.name) }}</span>
     </div>
     <div class="form__item">
         {{ form_label(addUserForm.contact) }}
-        {{ form_errors(addUserForm.contact) }}
         {{ form_widget(addUserForm.contact) }}
+        <span class="class_error">{{ form_errors(addUserForm.contact) }}</span>
     </div>
     {{ form_widget(addUserForm.save) }}
     <a class="text-link" href="#">Уже есть аккаунт</a>

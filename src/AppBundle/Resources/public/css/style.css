@@ -1246,6 +1246,6 @@ input:invalid .form__error{
 
 .class_error {
   display: block;
-  font-size: 51px;
+  font-size: 11px;
   color: #49f800;
 }

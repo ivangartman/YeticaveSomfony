@@ -3,14 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Users
- *
- * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UsersRepository")
+ * @ORM\Table(name="users")
+ * @UniqueEntity(fields={"email"}, message="Пользователь с этим E-mail уже зарегистрирован")
  */
-class Users
+class Users implements UserInterface
 {
     /**
      * @var int
@@ -36,6 +38,18 @@ class Users
     /**
      * @var string
      *
+     * @Assert\NotBlank(
+     *     message="Введите E-mail"
+     * )
+     * @Assert\Length(
+     *      max = 120,
+     *      maxMessage = "Наименование не должно быть длиннее {{ limit }} символов"
+     * )
+     * @Assert\Email(
+     *     message = "'{{ value }}' не корректное значение E-mail",
+     *     checkMX = true
+     * )
+     *
      * @ORM\Column(name="email", type="string", length=120, unique=true)
      */
     private $email;
@@ -43,9 +57,23 @@ class Users
     /**
      * @var string
      *
+     * @Assert\NotBlank(
+     *     message="Введите имя"
+     * )
+     * @Assert\Length(
+     *      max = 60,
+     *      maxMessage = "Наименование не должно быть длиннее {{ limit }} символов"
+     * )
+     *
      * @ORM\Column(name="name", type="string", length=60)
      */
     private $name;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
 
     /**
      * @var string
@@ -56,6 +84,14 @@ class Users
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(
+     *     message="Напишите как с вами связаться"
+     * )
+     * @Assert\Length(
+     *      max = 120,
+     *      maxMessage = "Наименование не должно быть длиннее {{ limit }} символов"
+     * )
      *
      * @ORM\Column(name="contact", type="string", length=120, nullable=true)
      */
@@ -145,6 +181,22 @@ class Users
     }
 
     /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param   mixed  $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
      * Set password
      *
      * @param string $password
@@ -190,6 +242,59 @@ class Users
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     *     public function getRoles()
+     *     {
+     *         return ['ROLE_USER'];
+     *     }
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+        return null;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }
 

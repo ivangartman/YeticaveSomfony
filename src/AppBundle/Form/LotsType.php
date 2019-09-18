@@ -25,44 +25,63 @@ class LotsType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Наименование',
-                'attr' => ['placeholder' => 'Введите наименование лота',
-                'maxlength' => 30]])
+                'attr'  => [
+                    'placeholder' => 'Введите наименование лота',
+                    'maxlength'   => 30
+                ]
+            ])
             ->add('content', TextareaType::class, [
                 'label' => 'Описание',
-                'attr' => ['placeholder' => 'Напишите описание лота',
-                'maxlength' => 500]])
+                'attr'  => [
+                    'placeholder' => 'Напишите описание лота',
+                    'maxlength'   => 500
+                ]
+            ])
             ->add('pictureUrl', FileType::class, [
                 'label' => 'Изображение',
-                'attr' => ['placeholder' => 'Загрузите изображение', 'class' => 'visually-hidden']])
+                'attr'  => [
+                    'placeholder' => 'Загрузите изображение',
+                    'class'       => 'visually-hidden'
+                ]
+            ])
             ->add('price', IntegerType::class, [
                 'label' => 'Начальная цена',
-                'attr' => ['placeholder' => '0',
-                'maxlength' => 11]])
+                'attr'  => [
+                    'placeholder' => '0',
+                    'maxlength'   => 11
+                ]
+            ])
             ->add('dateEnd', DateType::class, [
-                'label' => 'Дата окончания торгов',
-                'widget' => 'single_text',])
+                'label'  => 'Дата окончания торгов',
+                'widget' => 'single_text',
+            ])
 //                'attr' => ['class' => 'form__input-date']])
 //            ->add('dateEnd', TextType::class, [
 //                'label' => 'Дата окончания торгов',
 //                'attr' => ['placeholder' => 'Введите дату в формате ГГГГ-ММ-ДД', 'class' => 'form__input-date']])
             ->add('stepRate', IntegerType::class, [
                 'label' => 'Шаг ставки',
-                'attr' => ['placeholder' => '0',
-                'maxlength' => 11]])
+                'attr'  => [
+                    'placeholder' => '0',
+                    'maxlength'   => 11
+                ]
+            ])
             ->add('user', EntityType::class, [
-                'class' => Users::class,
+                'class'        => Users::class,
                 'choice_label' => 'name',
             ])
             ->add('category', EntityType::class, array(
-                    'class' => Category::class,
+                    'class'        => Category::class,
                     'choice_label' => 'name',
                 )
             )
             ->add('save', SubmitType::class, [
                 'label' => 'Добавить лот',
-                'attr' => ['class' => 'button']])
-        ;
-    }/**
+                'attr'  => ['class' => 'button']
+            ]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

@@ -1,9 +1,20 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
+    encoders:
+        AppBundle\Entity\Users: bcrypt
+#            algorithm: bcrypt
+#    encoders:
+#        Symfony\Component\Security\Core\Users: sha512
+#        App\Entity\Users:
+#            algorithm:  bcrypt
+#            cost: 12
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
+        user:
+            entity:
+                class: AppBundle\Entity\User
         in_memory:
             memory: ~
 
@@ -18,7 +29,10 @@ security:
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+            # http_basic: ~
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            # form_login: ~
+
+
+
