@@ -46,7 +46,7 @@
                                     <span>{{ minRate|price }}</span>
                                 </div>
                             </div>
-                            {% if ratesLot.user.id != app.user.id %}
+                            {% if ratesLot.user.id != app.user.id and lotId.user.id != app.user.id %}
                             <div class="lot-item__form">
                                 {{ form_start(addRateForm) }}
                                 {{ form_errors(addRateForm) }}
@@ -80,6 +80,5 @@
             </div>
         {% endfor %}
     </section>
-
 
 {% endblock %}

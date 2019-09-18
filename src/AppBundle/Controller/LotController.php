@@ -9,6 +9,7 @@ use AppBundle\Entity\Rates;
 use AppBundle\Form\LotsType;
 use AppBundle\Form\RatesType;
 use AppBundle\Service\FileUploader;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +87,7 @@ class LotController extends Controller
         //Поиск сущности лота по ID
         $em    = $this->getDoctrine()->getManager();
         $lotId = $em->getRepository('AppBundle:Lots')->find($id);
-
+        dump($lotId);
         //Форма добавления ставки
         $rate = new Rates();
         $form = $this->createForm(RatesType::class);
@@ -121,6 +122,7 @@ class LotController extends Controller
             'user'          => $user,
             'error'         => $error,
             'ratesLot'      => $ratesLot,
+            'lotId'         => $lotId
         ]);
     }
 
@@ -132,6 +134,7 @@ class LotController extends Controller
      * @param   FileUploader  $fileUploader
      *
      * @return Response
+     * @throws \Exception
      */
     public function addLotAction(Request $request, FileUploader $fileUploader)
     {
@@ -139,35 +142,43 @@ class LotController extends Controller
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         //Получение категорий
-        $categories = $this
+        $categories    = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Category')
             ->findCategory();
+        //Получение текущей даты
+        $tomorrow_Date = new DateTime('tomorrow');
+        $errorsData = '';
         //Форма добавления лота
         $lot  = new Lots();
         $form = $this->createForm(LotsType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //Сохранение изображения
-            /** @var UploadedFile $imgFile */
-            $imgFile = $form['pictureUrl']->getData();
-            $imgFileName = $fileUploader->upload($imgFile);
-            //Сохранение данных из формы в БД
-//            $add = $form->getData();
-            $add = $lot
-                ->setName($form->get('name')->getData())
-                ->setCategory($form->get('category')->getData())
-                ->setContent($form->get('content')->getData())
-                ->setPictureUrl($imgFileName)
-                ->setPrice($form->get('price')->getData())
-                ->setStepRate($form->get('stepRate')->getData())
-                ->setDateEnd($form->get('dateEnd')->getData())
-                ->setUser($user);
-            $em  = $this->getDoctrine()->getManager();
-            $em->persist($add);
-            $em->flush();
+            //Валидация даты
+            if ($form->get('dateEnd')->getData()->format('Y-m-d') < $tomorrow_Date->format('Y-m-d')) {
+                $errorsData = 'Введите дату больше текущей, хотя бы на один день';
+            } else {
+                //Сохранение изображения
+                /** @var UploadedFile $imgFile */
+                $imgFile     = $form['pictureUrl']->getData();
+                $imgFileName = $fileUploader->upload($imgFile);
+                //Сохранение данных из формы в БД
+//              $add = $form->getData();
+                $add = $lot
+                    ->setName($form->get('name')->getData())
+                    ->setCategory($form->get('category')->getData())
+                    ->setContent($form->get('content')->getData())
+                    ->setPictureUrl($imgFileName)
+                    ->setPrice($form->get('price')->getData())
+                    ->setStepRate($form->get('stepRate')->getData())
+                    ->setDateEnd($form->get('dateEnd')->getData())
+                    ->setUser($user);
+                $em  = $this->getDoctrine()->getManager();
+                $em->persist($add);
+                $em->flush();
 
-            return $this->redirectToRoute('addLot');
+                return $this->redirectToRoute('addLot');
+            }
         }
 //        //Запоминание Id пользователя
 //        $form->get('user')->setData($user);
@@ -176,6 +187,7 @@ class LotController extends Controller
             'categories'    => $categories,
             'searchMessage' => '',
             'addLotForm'    => $form->createView(),
+            'errorsData'    => $errorsData
         ]);
     }
 }

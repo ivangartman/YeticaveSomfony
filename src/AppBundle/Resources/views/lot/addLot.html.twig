@@ -56,7 +56,7 @@
             <div class="form__item">
                 {{ form_label(addLotForm.dateEnd) }}
                 {{ form_widget(addLotForm.dateEnd) }}
-                <span class="class_error">{{ form_errors(addLotForm.dateEnd) }}</span>
+                <span class="class_error">{{ form_errors(addLotForm.dateEnd) }} {{ errorsData }}</span>
             </div>
             <div class="visually-hidden">
                 {{ form_label(addLotForm.user) }}
