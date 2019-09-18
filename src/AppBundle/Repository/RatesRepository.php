@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class RatesRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findRates($id)
+    {
+        return $this
+            ->createQueryBuilder('rates')
+            ->join('rates.lot', 'lots')
+            ->where('lots.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }

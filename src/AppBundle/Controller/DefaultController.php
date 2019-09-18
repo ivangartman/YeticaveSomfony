@@ -17,8 +17,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        //$a = $appExtension->timer('20.09.2019');
-
         $categories = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Category')
@@ -32,8 +30,6 @@ class DefaultController extends Controller
         return $this->render('@App/default/index.html.twig', [
             'categories' => $categories,
             'lots' => $lots,
-
-
         ]);
     }
 }
