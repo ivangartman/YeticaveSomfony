@@ -51,11 +51,11 @@
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <?php foreach ($categories as $category): ?>
+            {% for category in categories %}
             <li class="nav__item <?= ($pagecat === htmlspecialchars($category['id'])) ? 'nav__item--current' : '' ?>">
-                <a href="#"><?= htmlspecialchars($category['name']) ?></a>
+                <a href="#">{{ category.name }}</a>
             </li>
-            <?php endforeach ?>
+            {% endfor %}
         </ul>
     </nav>
     <div class="main-footer__bottom container">
