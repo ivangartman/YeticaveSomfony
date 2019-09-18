@@ -847,7 +847,7 @@ main.container {
 }
 
 .form__error {
-  display: none;
+/*  display: none;*/
   font-size: 11px;
   color: #f84646;
 }
@@ -1242,4 +1242,10 @@ input:invalid .form__error{
 
 .rates__item--end {
   opacity: 0.4;
+}
+
+.class_error {
+  display: block;
+  font-size: 51px;
+  color: #49f800;
 }

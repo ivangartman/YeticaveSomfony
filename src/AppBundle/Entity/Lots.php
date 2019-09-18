@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Lots
@@ -30,6 +31,9 @@ class Lots
 
     /**
      * @var Category|null
+     * @Assert\NotNull(
+     *     message="Выберите категорию"
+     * )
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
      */
@@ -38,12 +42,26 @@ class Lots
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_add", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="date_add", type="datetime")
      */
     private $dateAdd;
 
+    public function __construct()
+    {
+        $this->dateAdd = new \DateTime();
+//        $this->user = 11;
+    }
+
     /**
      * @var string
+     *
+     * @Assert\NotNull(
+     *     message="Введите наименование лота"
+     * )
+     * @Assert\Length(
+     *      max = 30,
+     *      maxMessage = "Наименование не должно быть длиннее {{ limit }} символов"
+     * )
      *
      * @ORM\Column(name="name", type="string", length=120)
      */
@@ -52,6 +70,14 @@ class Lots
     /**
      * @var string
      *
+     * @Assert\NotNull(
+     *     message="Введите наименование лота"
+     * )
+     * @Assert\Length(
+     *      max = 500,
+     *      maxMessage = "Описание не должно быть длиннее {{ limit }} символов"
+     * )
+     *
      * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content;
@@ -59,12 +85,27 @@ class Lots
     /**
      * @var string
      *
-     * @ORM\Column(name="picture_url", type="text", nullable=true)
+     * @Assert\NotNull(
+     *     message="Загрузите изображение"
+     * )
+     * @Assert\Image(
+     *     mimeTypesMessage = "Этот файл не является валидным изображением"
+     * )
+     *
+     * @ORM\Column(name="picture_url", type="string", nullable=true)
      */
     private $pictureUrl;
 
     /**
      * @var int
+     *
+     * @Assert\NotNull(
+     *     message="Введите начальную цену"
+     * )
+     * @Assert\Length(
+     *      max = 11,
+     *      maxMessage = "Введите не более {{ limit }} цифр"
+     * )
      *
      * @ORM\Column(name="price", type="integer")
      */
@@ -73,12 +114,27 @@ class Lots
     /**
      * @var \DateTime
      *
+     * @Assert\NotNull(
+     *     message="Введите дату завершения торгов"
+     * )
+     * @Assert\Date(
+     *     message="Введите дату в формате ГГГГ-ММ-ДД"
+     * )
+     *
      * @ORM\Column(name="date_end", type="datetime", nullable=true)
      */
     private $dateEnd;
 
     /**
      * @var int
+     *
+     * @Assert\NotNull(
+     *     message="Введите шаг ставки"
+     * )
+     * @Assert\Length(
+     *      max = 11,
+     *      maxMessage = "Введите не более {{ limit }} цифр"
+     * )
      *
      * @ORM\Column(name="step_rate", type="integer", nullable=true)
      */

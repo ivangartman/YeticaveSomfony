@@ -4,11 +4,11 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Service\AppFunctioins;
+use AppBundle\Form\LotsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use AppBundle\Entity\Category;
 
 
 class LotController extends Controller
@@ -44,6 +44,39 @@ class LotController extends Controller
             'lots' => $lots,
             'rates' => $rates,
             'searchMessage' => '',
+        ]);
+    }
+
+    /**
+     * @Route("addLot", name="addLot")
+     *
+     * @param   Request  $request
+     *
+     * @return Response
+     */
+    public function addLotAction(Request $request)
+    {
+        $categories = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Category')
+            ->findCategory()
+        ;
+
+        $form = $this->createForm(LotsType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $add = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($add);
+            $em->flush();
+
+            return $this->redirectToRoute('addLot');
+        }
+
+        return $this->render('@App/lot/addLot.html.twig', [
+            'categories' => $categories,
+            'searchMessage' => '',
+            'addLotForm' => $form->createView(),
         ]);
     }
 }

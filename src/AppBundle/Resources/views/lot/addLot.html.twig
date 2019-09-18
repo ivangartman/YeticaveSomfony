@@ -1,0 +1,71 @@
+{% extends '@App/layout.html.twig' %}
+
+{% block body %}
+
+    <nav class="nav">
+        <ul class="nav__list container">
+            {% for category in categories %}
+                <li class="nav__item">
+                    <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+    <div class="form form--add-lot container">
+        {{ form_start(addLotForm) }}
+        <h2>Регистрация нового аккаунта</h2>
+        {{ form_errors(addLotForm) }}
+
+        <div class="form__container-two">
+            <div class="form__item">
+                {{ form_label(addLotForm.name) }}
+                {{ form_widget(addLotForm.name) }}
+                <span class="class_error">{{ form_errors(addLotForm.name) }}</span>
+            </div>
+            <div class="form__item">
+                {{ form_label(addLotForm.category) }}
+                {{ form_widget(addLotForm.category) }}
+                <span class="">{{ form_errors(addLotForm.category) }}</span>
+            </div>
+        </div>
+        <div class="form__item form__item--wide">
+            {{ form_label(addLotForm.content) }}
+            {{ form_widget(addLotForm.content) }}
+            <span class="">{{ form_errors(addLotForm.category) }}</span>
+        </div>
+        <div class="form__item form__item--file ">
+            {{ form_label(addLotForm.pictureUrl) }}
+            <div class="form__input-file">
+                {{ form_widget(addLotForm.pictureUrl) }}
+                {{ form_label(addLotForm.pictureUrl, 'Добавить') }}
+                <span class="">{{ form_errors(addLotForm.category) }}</span>
+            </div>
+        </div>
+        <div class="form__container-three">
+            <div class="form__item form__item--small">
+                {{ form_label(addLotForm.price) }}
+                {{ form_widget(addLotForm.price) }}
+                <span class="">{{ form_errors(addLotForm.category) }}</span>
+            </div>
+            <div class="form__item form__item--small">
+                {{ form_label(addLotForm.stepRate) }}
+                {{ form_widget(addLotForm.stepRate) }}
+                <span class="">{{ form_errors(addLotForm.category) }}</span>
+            </div>
+            <div class="form__item">
+                {{ form_label(addLotForm.dateEnd) }}
+                {{ form_widget(addLotForm.dateEnd) }}
+                <span class="">{{ form_errors(addLotForm.category) }}</span>
+            </div>
+        </div>
+        <div class="visually-hidden">
+            {{ form_label(addLotForm.user) }}
+            {{ form_errors(addLotForm.user) }}
+            {{ form_widget(addLotForm.user) }}
+        </div>
+        {{ form_widget(addLotForm.save) }}
+
+        {{ form_end(addLotForm) }}
+    </div>
+
+{% endblock %}
