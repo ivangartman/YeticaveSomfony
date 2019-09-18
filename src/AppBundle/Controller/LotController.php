@@ -40,11 +40,16 @@ class LotController extends Controller
         if (!$lots) {
             throw $this->createNotFoundException('Product not found');
         }
-        //Получение последней ставки по ID лота
+        //Получение последней ставки по ID лота (массив)
         $ratesLotId = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Rates')
             ->findRatesLotId($id);
+        //Получение последней ставки по ID лота (объект)
+        $ratesLots = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Rates')
+            ->findRatesLot($id);
         //Получение всех ставок по ID лота
         $rates = $this
             ->getDoctrine()
@@ -64,6 +69,14 @@ class LotController extends Controller
         }
         $minRate = $priceMax + floor(($priceMax / 100) * $stepRate);
 
+        //Получение ID пользователя сделавшего ставку
+        $ratesLot = ['user' => ['id' => 0]];
+        if ($ratesLots) {
+            foreach ($ratesLots as $key => $rate) {
+                $ratesLot = $rate;
+            }
+        }
+
         //Получение сущности пользователя
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -75,17 +88,23 @@ class LotController extends Controller
         $rate = new Rates();
         $form = $this->createForm(RatesType::class);
         $form->handleRequest($request);
+        $error = '';
         if ($form->isSubmitted() && $form->isValid()) {
-            $add = $rate
-                ->setLot($lotId)
-                ->setUser($user)
-                ->setPrice($form->get('price')->getData());
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($add);
-            $em->flush();
+            if ($form->get('price')->getData() < $minRate) {
+                $error = "Сделайте ставку неменее ".$minRate;
+            } else {
+                $add = $rate
+                    ->setLot($lotId)
+                    ->setUser($user)
+                    ->setPrice($form->get('price')->getData());
 
-            return $this->redirectToRoute('lot', ['id' => $id]);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($add);
+                $em->flush();
+
+                return $this->redirectToRoute('lot', ['id' => $id]);
+            }
         }
 
         return $this->render('@App/lot/lot.html.twig', [
@@ -96,7 +115,9 @@ class LotController extends Controller
             'searchMessage' => '',
             'minRate'       => $minRate,
             'addRateForm'   => $form->createView(),
-            'user'          => $user
+            'user'          => $user,
+            'error'         => $error,
+            'ratesLot'      => $ratesLot,
         ]);
     }
 
@@ -109,7 +130,6 @@ class LotController extends Controller
      */
     public function addLotAction(Request $request)
     {
-
         //Получение ID пользователя
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -119,10 +139,19 @@ class LotController extends Controller
             ->getRepository('AppBundle:Category')
             ->findCategory();
         //Форма добавления лота
+        $lot  = new Lots();
         $form = $this->createForm(LotsType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $add = $form->getData();
+//            $add = $form->getData();
+            $add = $lot
+                ->setName($form->get('name')->getData())
+                ->setContent($form->get('content')->getData())
+                ->setPictureUrl($form->get('pictureUrl')->getData())
+                ->setPrice($form->get('price')->getData())
+                ->setStepRate($form->get('stepRate')->getData())
+                ->setDateEnd($form->get('dateEnd')->getData())
+                ->setUser($user);
             $em  = $this->getDoctrine()->getManager();
             $em->persist($add);
             $em->flush();
@@ -130,8 +159,8 @@ class LotController extends Controller
             return $this->redirectToRoute('addLot');
         }
 
-        //Запоминание Id пользователя
-        $form->get('user')->setData($user);
+//        //Запоминание Id пользователя
+//        $form->get('user')->setData($user);
 
         return $this->render('@App/lot/addLot.html.twig', [
             'categories'    => $categories,

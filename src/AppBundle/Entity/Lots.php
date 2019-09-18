@@ -105,6 +105,10 @@ class Lots
      *      max = 11,
      *      maxMessage = "Введите не более {{ limit }} цифр"
      * )
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Введите целое число"
+     * )
      *
      * @ORM\Column(name="price", type="integer")
      */
@@ -127,6 +131,10 @@ class Lots
     /**
      * @var int
      *
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Введите целое число"
+     * )
      * @Assert\NotNull(
      *     message="Введите шаг ставки"
      * )

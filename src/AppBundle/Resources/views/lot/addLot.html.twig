@@ -26,39 +26,44 @@
             <div class="form__item">
                 {{ form_label(addLotForm.category) }}
                 {{ form_widget(addLotForm.category) }}
-                <span class="">{{ form_errors(addLotForm.category) }}</span>
+                <span class="class_error">{{ form_errors(addLotForm.category) }}</span>
             </div>
         </div>
         <div class="form__item form__item--wide">
             {{ form_label(addLotForm.content) }}
             {{ form_widget(addLotForm.content) }}
-            <span class="">{{ form_errors(addLotForm.category) }}</span>
+            <span class="class_error">{{ form_errors(addLotForm.content) }}</span>
         </div>
         <div class="form__item form__item--file ">
             {{ form_label(addLotForm.pictureUrl) }}
             <div class="form__input-file">
                 {{ form_widget(addLotForm.pictureUrl) }}
                 {{ form_label(addLotForm.pictureUrl, 'Добавить') }}
-                <span class="">{{ form_errors(addLotForm.category) }}</span>
+                <span class="class_error">{{ form_errors(addLotForm.pictureUrl) }}</span>
             </div>
         </div>
         <div class="form__container-three">
             <div class="form__item form__item--small">
                 {{ form_label(addLotForm.price) }}
                 {{ form_widget(addLotForm.price) }}
-                <span class="">{{ form_errors(addLotForm.category) }}</span>
+                <span class="class_error">{{ form_errors(addLotForm.price) }}</span>
             </div>
             <div class="form__item form__item--small">
                 {{ form_label(addLotForm.stepRate) }}
                 {{ form_widget(addLotForm.stepRate) }}
-                <span class="">{{ form_errors(addLotForm.category) }}</span>
+                <span class="class_error">{{ form_errors(addLotForm.stepRate) }}</span>
             </div>
             <div class="form__item">
                 {{ form_label(addLotForm.dateEnd) }}
                 {{ form_widget(addLotForm.dateEnd) }}
-                <span class="">{{ form_errors(addLotForm.category) }}</span>
+                <span class="class_error">{{ form_errors(addLotForm.dateEnd) }}</span>
+            </div>
+            <div class="visually-hidden">
+                {{ form_label(addLotForm.user) }}
+                {{ form_widget(addLotForm.user) }}
             </div>
         </div>
+
 
         {{ form_widget(addLotForm.save) }}
 
