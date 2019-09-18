@@ -20,4 +20,17 @@ class RatesRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findRatesLotId($id)
+    {
+        return $this
+            ->createQueryBuilder('rates')
+            ->join('rates.lot', 'lots')
+            ->where('lots.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('rates.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

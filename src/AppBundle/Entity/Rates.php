@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Rates
@@ -32,19 +32,32 @@ class Rates
     /**
      * @var Lots|null
      *
-     * @ORM\ManyToOne(targetEntity="Lots")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lots")
      */
     private $lot;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_add", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="date_add", type="datetime")
      */
     private $dateAdd;
 
+    public function __construct()
+    {
+        $this->dateAdd = new \ DateTime();
+    }
+
     /**
      * @var int
+     *
+     * @Assert\NotNull(
+     *     message="Введите начальную цену"
+     * )
+     * @Assert\Length(
+     *      max = 11,
+     *      maxMessage = "Введите не более {{ limit }} цифр"
+     * )
      *
      * @ORM\Column(name="price", type="integer", length=11)
      */

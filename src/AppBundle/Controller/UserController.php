@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends Controller
@@ -63,23 +64,22 @@ class UserController extends Controller
      */
     public function loginAction(Request $request, AuthenticationUtils $authUtils)
     {
+        //Проверка выполнения входа пользователем
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException('Вход в систему уже выполнен');
+        }
+
         $categories = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Category')
             ->findCategory()
         ;
- //       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-//  бу :(. Никогда не проверяйте объект User для проверки выполнения входа
-//        if ($this->getUser() != null) {
-            // ...
 
             // получить ошибку входа, если она есть
             $error = $authUtils->getLastAuthenticationError();
-
             // последнее имя пользователя, введенное пользователем
             $lastUsername = $authUtils->getLastUsername();
-//        }
+
         return $this->render('@App/users/login.html.twig', array(
             'categories' => $categories,
             'searchMessage' => '',

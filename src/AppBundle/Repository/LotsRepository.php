@@ -29,7 +29,7 @@ class LotsRepository extends \Doctrine\ORM\EntityRepository
             ->where('lots.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
     }
 
     public function findAllLots($id)

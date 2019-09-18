@@ -1,71 +1,81 @@
 {% extends '@App/layout.html.twig' %}
 
 {% block body %}
-
     <nav class="nav">
         <ul class="nav__list container">
             {% for category in categories %}
-            <li class="nav__item">
-                <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
-            </li>
+                <li class="nav__item">
+                    <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
+                </li>
             {% endfor %}
         </ul>
     </nav>
     <section class="lot-item container">
         {% for lot in lots %}
-        <h2>{{ lot.name }}</h2>
-        <div class="lot-item__content">
-            <div class="lot-item__left">
-                <div class="lot-item__image">
-                    <img src="{{ asset('bundles/app/img/lot-1.jpg') }}" width="730" height="548" alt="Сноуборд">
+            <h2>{{ lot.name }}</h2>
+            <div class="lot-item__content">
+                <div class="lot-item__left">
+                    <div class="lot-item__image">
+                        <img src="{{ asset('bundles/app/img/lot-1.jpg') }}" width="730" height="548" alt="Сноуборд">
+                    </div>
+                    <p class="lot-item__category">Категория:<span>{{ lot.name }}</span></p>
+                    <p class="lot-item__description">{{ lot.content }}</p>
                 </div>
-                <p class="lot-item__category">Категория:<span>{{ lot.category.name }}</span></p>
-                <p class="lot-item__description">{{ lot.content }}</p>
-            </div>
 
-            <div class="lot-item__right">
-                <?php if ($user_name && $date_end == null && $user_id != $lot_userid && $user_id != $rate_userid ): ?>
-                {% if is_granted('ROLE_USER') %}
-                <div class="lot-item__state">
-                    <div class="lot-item__timer timer  {{ finishing(lot.dateEnd|date('d.m.Y')) }}">
-                        {{ lot.dateEnd|date('d.m.Y')|dateend }}
-                    </div>
-                    <div class="lot-item__cost-state">
-                        <div class="lot-item__rate">
-                            <span class="lot-item__amount">Текущая цена</span>
-                            <span class="lot-item__cost">{{ lot.price|price }}<?= $lot['price_rate'] ? price_format($lot['price_rate']) : price_format($lot['price_lot']) ?></span>
+                <div class="lot-item__right">
+                    <?php if ($user_name && $date_end == null && $user_id != $lot_userid && $user_id != $rate_userid ): ?>
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="lot-item__state">
+                            <div class="lot-item__timer timer  {{ finishing(lot.dateEnd|date('d.m.Y')) }}">
+                                {{ lot.dateEnd|date('d.m.Y')|dateend }}
+                            </div>
+                            <div class="lot-item__cost-state">
+                                <div class="lot-item__rate">
+                                    <span class="lot-item__amount">Текущая цена</span>
+                                    <span class="lot-item__cost">
+                                {% if  ratesLotId %}
+                                    {% for rate in ratesLotId %}
+                                        {{ rate.price|price }}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ lot.price|price }}
+                                {% endif %}
+                            </span>
+                                </div>
+                                <div class="lot-item__min-cost">
+                                    Мин. ставка
+                                    <span>{{ minRate|price }}</span>
+                                </div>
+                            </div>
+                            <div class="lot-item__form">
+                                {{ form_start(addRateForm) }}
+
+                                <p class="lot-item__form-item form__item">
+                                    {{ form_label(addRateForm.price) }}
+                                    {{ form_widget(addRateForm.price) }}
+                                    <span class="form__error">{{ form_errors(addRateForm.price) }}</span>
+                                </p>
+                                {{ form_widget(addRateForm.save) }}
+
+                                {{ form_end(addRateForm) }}
+                            </div>
                         </div>
-                        <div class="lot-item__min-cost">
-                            Мин. ставка
-                            <span>{{ lot.price|price }}<?= price_format($min_rate) ?></span>
+                        <?php endif ?>
+                        <div class="history">
+                            <h3>История ставок (<span>{{ rates|length }}</span>)</h3>
+                            <table class="history__list">
+                                {% for rate in rates %}
+                                    <tr class="history__item">
+                                        <td class="history__name">{{ rate.user.name }}</td>
+                                        <td class="history__price">{{ rate.price|price }}</td>
+                                        <td class="history__time">{{ rate.dateAdd|date('d.m.Y') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
                         </div>
-                    </div>
-                    <form enctype="multipart/form-data" class="lot-item__form <?= isset($errors) ? 'form--invalid' : '' ?>" action="" method="post" autocomplete="off">
-                        <p class="lot-item__form-item form__item <?= isset($errors['price']) ? 'form__item--invalid' : '' ?>">
-                            <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="text" name="price" placeholder="<?= price_format($min_rate) ?>" value="<?= isset($rate['price']) ? $rate['price'] : '' ?>">
-                            <span class="form__error"><?= $errors['price'] ?></span>
-                        </p>
-                        <button type="submit" class="button">Сделать ставку</button>
-                    </form>
+                    {% endif %}
                 </div>
-                <?php endif ?>
-                <div class="history">
-                    <h3>История ставок (<span><?= $sum ?></span>)</h3>
-                    <table class="history__list">
-                        <?php foreach ($rates as $rate): ?>
-                        {% for rate in rates %}
-                        <tr class="history__item">
-                            <td class="history__name">{{ rate.user.name }}</td>
-                            <td class="history__price">{{ rate.price|price }}</td>
-                            <td class="history__time">{{ rate.dateAdd|date('d.m.Y') }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-                {% endif %}
             </div>
-        </div>
         {% endfor %}
     </section>
 

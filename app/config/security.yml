@@ -44,9 +44,7 @@ security:
                 path: /logout
                 target: /
 
-#    access_control:
-        # потребовать ROLE_ADMIN для /admin*
-#        - { path: ^/login, roles: ROLE_ADMIN }
-
-
-
+    access_control:
+        # потребовать ROLE_USER для /addLot*
+        - { path: ^/addLot, roles: ROLE_USER }
+#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

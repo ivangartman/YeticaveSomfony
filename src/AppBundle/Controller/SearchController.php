@@ -42,9 +42,9 @@ class SearchController extends Controller
             ->getDoctrine()
             ->getRepository('AppBundle:Lots')
             ->findSearch($search);
-        if (!$lots) {
-            throw $this->createNotFoundException('Лот не найден ');
-        }
+//        if (!$lots) {
+//            throw $this->createNotFoundException('Лот не найден ');
+//        }
         return $this->render('@App/search/search.html.twig', [
             'categories' => $categories,
             'lots' => $lots,

@@ -48,7 +48,7 @@ class Lots
 
     public function __construct()
     {
-        $this->dateAdd = new \DateTime();
+        $this->dateAdd = new \ DateTime();
     }
 
     /**

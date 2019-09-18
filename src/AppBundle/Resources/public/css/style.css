@@ -1262,3 +1262,7 @@ input:invalid .form__error{
   margin: 0;
   padding: 0;
 }
+.lot-item__form .button {
+  margin-top: 15px;
+  padding: 12px;
+}
