@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}Yeticave{% endblock %}</title>
     <link href="{{ asset('bundles/app/css/normalize.min.css') }}../css/normalize.min.css" rel="stylesheet">
     <link href="{{ asset('bundles/app/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/app/css/flatpickr.min.css') }}" rel="stylesheet">
@@ -30,7 +30,7 @@
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <p>{{ app.user.name }}</p>
                     {% endif %}
-                    <a class="user-menu__bets" href="#">Мои ставки</a>
+{#                    <a class="user-menu__bets" href="#">Мои ставки</a>#}
                     <a class="user-menu__logout" href="{{ path('logout') }}">Выход</a>
                 </div>
                {% else %}
@@ -57,7 +57,7 @@
     <nav class="nav">
         <ul class="nav__list container">
             {% for category in categories %}
-            <li class="nav__item">
+            <li class="nav__item {% if catId == category.id %} nav__item--current {% endif %}">
                 <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
             </li>
             {% endfor %}

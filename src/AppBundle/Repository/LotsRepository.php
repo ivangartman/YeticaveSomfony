@@ -15,6 +15,8 @@ class LotsRepository extends \Doctrine\ORM\EntityRepository
         return $this
             ->createQueryBuilder('lots')
             ->join('lots.category', 'category')
+            ->where('lots.dateEnd > :curDate')
+            ->setParameter('curDate', date('Y-m-d'))
             ->orderBy('lots.id', 'DESC')
             ->setMaxResults(9)
             ->getQuery()
@@ -38,7 +40,10 @@ class LotsRepository extends \Doctrine\ORM\EntityRepository
             ->createQueryBuilder('lots')
             ->join('lots.category', 'category')
             ->where('category.id = :id')
+            ->andWhere('lots.dateEnd > :curDate')
             ->setParameter('id', $id)
+            ->setParameter('curDate', date('Y-m-d'))
+            ->orderBy('lots.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -49,9 +54,11 @@ class LotsRepository extends \Doctrine\ORM\EntityRepository
             ->createQueryBuilder('lots')
             ->join('lots.category', 'category')
             ->where($this->createQueryBuilder('lots')->expr()->like('lots.name', ':search'))
+            ->andWhere('lots.dateEnd > :curDate')
 //            ->where($this->createQueryBuilder('lots')->expr()->like($this->createQueryBuilder('lots')->expr()->lower('lots.name'), ($this->createQueryBuilder('lots')->expr())->lower(':search')))
 //            ->where('lots.name = :search')
             ->setParameter('search', $search)
+            ->setParameter('curDate', date('Y-m-d'))
             ->getQuery()
             ->getResult();
     }

@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AllLotsController extends Controller
 {
+
     /**
      * @Route("allLot/{id}", name="allLot", requirements={"id": "[0-9]+"})
      *
@@ -19,27 +20,29 @@ class AllLotsController extends Controller
      */
     public function indexAction($id)
     {
+
         $categories = $this
-            ->getDoctrine()
-            ->getRepository('AppBundle:Category')
-            ->findCategory();
-        $lots  = $this
-            ->getDoctrine()
-            ->getRepository('AppBundle:Lots')
-            ->findAllLots($id);
+          ->getDoctrine()
+          ->getRepository('AppBundle:Category')
+          ->findCategory();
+        $lots = $this
+          ->getDoctrine()
+          ->getRepository('AppBundle:Lots')
+          ->findAllLots($id);
         if (!$lots) {
             throw $this->createNotFoundException('Product not found');
         }
-
-        foreach ($lots as $key=>$item) {
+        $catName = '';
+        foreach ($lots as $key => $item) {
             $catName = $item;
         }
         return $this->render('@App/allLots/allLots.html.twig', [
-            'categories' => $categories,
-            'lots'       => $lots,
-            'catId'      => $id,
-            'catName'    => $catName,
-            'searchMessage' => '',
+          'categories'    => $categories,
+          'lots'          => $lots,
+          'catId'         => $id,
+          'catName'       => $catName,
+          'searchMessage' => '',
         ]);
     }
+
 }

@@ -12,15 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SearchController extends Controller
 {
+
     /**
      * @Route("search", name="search")
      *
-     * @param   Request  $request
+     * @param Request $request
      *
      * @return Response
      */
     public function lotAction(Request $request)
     {
+        $searchMessage = '';
         $search = $request->query->get('search');
 
         $session = new Session();
@@ -29,27 +31,24 @@ class SearchController extends Controller
 
         $session->getFlashBag()->add('warning', $search);
 //        $session->getFlashBag()->set('warning', 'Failed to update name');
-        // отобразить ошибки
-        foreach ($session->getFlashBag()->get('warning', array()) as $message) {
+        //Отобразить ошибки
+        foreach ($session->getFlashBag()->get('warning', []) as $message) {
             $searchMessage = $message;
         }
         $categories = $this
-            ->getDoctrine()
-            ->getRepository('AppBundle:Category')
-            ->findCategory()
-        ;
+          ->getDoctrine()
+          ->getRepository('AppBundle:Category')
+          ->findCategory();
         $lots = $this
-            ->getDoctrine()
-            ->getRepository('AppBundle:Lots')
-            ->findSearch($search);
-//        if (!$lots) {
-//            throw $this->createNotFoundException('Лот не найден ');
-//        }
+          ->getDoctrine()
+          ->getRepository('AppBundle:Lots')
+          ->findSearch($search);
         return $this->render('@App/search/search.html.twig', [
-            'categories' => $categories,
-            'lots' => $lots,
-//            'search' => $search,
-            'searchMessage' => $searchMessage,
+          'categories'    => $categories,
+          'lots'          => $lots,
+          'searchMessage' => $searchMessage,
+          'catId'         => '',
         ]);
     }
+
 }
