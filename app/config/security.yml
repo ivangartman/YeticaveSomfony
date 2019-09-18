@@ -12,11 +12,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        user:
+        my_provider:
             entity:
-                class: AppBundle\Entity\User
-        in_memory:
-            memory: ~
+                class: AppBundle\Entity\Users
+                property: email
+#        in_memory:
+#            memory: ~
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -25,14 +26,27 @@ security:
             security: false
 
         main:
-            anonymous: ~
+            anonymous: true
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+#            pattern:    ^/
             # http_basic: ~
+#            provider: our_db_provider
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-            # form_login: ~
+            form_login:
+                login_path: login
+                check_path: login
+                provider: my_provider
+
+            logout:
+                path: /logout
+                target: /
+
+#    access_control:
+        # потребовать ROLE_ADMIN для /admin*
+#        - { path: ^/login, roles: ROLE_ADMIN }
 
 
 

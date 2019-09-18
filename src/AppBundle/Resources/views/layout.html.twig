@@ -22,22 +22,25 @@
             <a class="main-header__add-lot button" href="{{ path('addLot') }}">Добавить лот</a>
 
            <nav class="user-menu">
-<!--                <?php if ($user_name): ?>
+                {% if is_granted('ROLE_USER') %}
                 <div class="user-menu__logged">
                     <p><?= strip_tags($user_name) ?></p>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <p>{{ app.user.name }}</p>
+                    {% endif %}
                     <a class="user-menu__bets" href="#">Мои ставки</a>
-                    <a class="user-menu__logout" href="#">Выход</a>
+                    <a class="user-menu__logout" href="{{ path('logout') }}">Выход</a>
                 </div>
-                <?php else: ?>-->
+               {% else %}
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
                         <a href="{{ path('signUp') }}">Регистрация</a>
                     </li>
                     <li class="user-menu__item">
-                        <a href="#">Вход</a>
+                        <a href="{{ path('login') }}">Вход</a>
                     </li>
                 </ul>
-                <!--<?php endif ?>-->
+               {% endif %}
 
             </nav>
         </div>

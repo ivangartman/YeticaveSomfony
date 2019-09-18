@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="users")
  * @UniqueEntity(fields={"email"}, message="Пользователь с этим E-mail уже зарегистрирован")
  */
-class Users implements UserInterface
+class Users implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -261,6 +261,9 @@ class Users implements UserInterface
     public function getRoles()
     {
         // TODO: Implement getRoles() method.
+        return [
+            'ROLE_USER'
+        ];
     }
 
     /**
@@ -296,5 +299,47 @@ class Users implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
-}
 
+    /**
+     * String representation of object
+     *
+     * @link  https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        // TODO: Implement serialize() method.
+        return serialize([
+            $this->id,
+            $this->contact,
+            $this->dateAdd,
+            $this->email,
+            $this->name,
+            $this->password,
+        ]);
+    }
+
+    /**
+     * Constructs the object
+     *
+     * @link  https://php.net/manual/en/serializable.unserialize.php
+     *
+     * @param $string
+     *
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($string)
+    {
+
+        list(
+            $this->id,
+            $this->contact,
+            $this->dateAdd,
+            $this->email,
+            $this->name,
+            $this->password,
+            ) = unserialize($string, ['allowed_classes' => false]);
+    }
+}

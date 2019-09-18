@@ -25,6 +25,7 @@
 
             <div class="lot-item__right">
                 <?php if ($user_name && $date_end == null && $user_id != $lot_userid && $user_id != $rate_userid ): ?>
+                {% if is_granted('ROLE_USER') %}
                 <div class="lot-item__state">
                     <div class="lot-item__timer timer  {{ finishing(lot.dateEnd|date('d.m.Y')) }}">
                         {{ lot.dateEnd|date('d.m.Y')|dateend }}
@@ -62,6 +63,7 @@
                         {% endfor %}
                     </table>
                 </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

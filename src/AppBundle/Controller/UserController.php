@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends Controller
 {
@@ -51,5 +52,47 @@ class UserController extends Controller
             'searchMessage' => '',
             'addUserForm' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/login", name="login")
+     * @param   Request              $request
+     * @param   AuthenticationUtils  $authUtils
+     *
+     * @return Response
+     */
+    public function loginAction(Request $request, AuthenticationUtils $authUtils)
+    {
+        $categories = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Category')
+            ->findCategory()
+        ;
+ //       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+//  бу :(. Никогда не проверяйте объект User для проверки выполнения входа
+//        if ($this->getUser() != null) {
+            // ...
+
+            // получить ошибку входа, если она есть
+            $error = $authUtils->getLastAuthenticationError();
+
+            // последнее имя пользователя, введенное пользователем
+            $lastUsername = $authUtils->getLastUsername();
+//        }
+        return $this->render('@App/users/login.html.twig', array(
+            'categories' => $categories,
+            'searchMessage' => '',
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+
     }
 }
