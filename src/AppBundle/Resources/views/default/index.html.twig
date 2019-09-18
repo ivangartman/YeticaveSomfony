@@ -20,7 +20,7 @@
             {% for lot in lots %}
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="{{ asset('bundles/app/img/lot-1.jpg') }}" width="350" height="260" alt="{{ lot.category.name }}">
+                    <img src="{{ asset('uploads/img/' ~ lot.pictureUrl) }}" width="350" height="260" alt="{{ lot.name }}">
                 </div>
                 <div class="lot__info">
                     <span class="lot__category">{{ lot.category.name }}</span>

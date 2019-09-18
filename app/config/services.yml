@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/service_container.html
 parameters:
     #parameter_name: value
+    img_directory: '%kernel.project_dir%/web/uploads/img'
 
 services:
     AppBundle\Twig\AppExtension:
@@ -36,4 +37,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    AppBundle\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%img_directory%'
 

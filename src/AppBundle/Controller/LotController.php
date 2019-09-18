@@ -8,10 +8,13 @@ use AppBundle\Entity\Lots;
 use AppBundle\Entity\Rates;
 use AppBundle\Form\LotsType;
 use AppBundle\Form\RatesType;
+use AppBundle\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 class LotController extends Controller
@@ -124,11 +127,13 @@ class LotController extends Controller
     /**
      * @Route("addLot", name="addLot")
      *
-     * @param   Request  $request
+     * @param   Request       $request
+     *
+     * @param   FileUploader  $fileUploader
      *
      * @return Response
      */
-    public function addLotAction(Request $request)
+    public function addLotAction(Request $request, FileUploader $fileUploader)
     {
         //Получение ID пользователя
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -143,11 +148,17 @@ class LotController extends Controller
         $form = $this->createForm(LotsType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //Сохранение изображения
+            /** @var UploadedFile $imgFile */
+            $imgFile = $form['pictureUrl']->getData();
+            $imgFileName = $fileUploader->upload($imgFile);
+            //Сохранение данных из формы в БД
 //            $add = $form->getData();
             $add = $lot
                 ->setName($form->get('name')->getData())
+                ->setCategory($form->get('category')->getData())
                 ->setContent($form->get('content')->getData())
-                ->setPictureUrl($form->get('pictureUrl')->getData())
+                ->setPictureUrl($imgFileName)
                 ->setPrice($form->get('price')->getData())
                 ->setStepRate($form->get('stepRate')->getData())
                 ->setDateEnd($form->get('dateEnd')->getData())
@@ -158,7 +169,6 @@ class LotController extends Controller
 
             return $this->redirectToRoute('addLot');
         }
-
 //        //Запоминание Id пользователя
 //        $form->get('user')->setData($user);
 

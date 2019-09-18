@@ -16,7 +16,7 @@
             <div class="lot-item__content">
                 <div class="lot-item__left">
                     <div class="lot-item__image">
-                        <img src="{{ asset('bundles/app/img/lot-1.jpg') }}" width="730" height="548" alt="Сноуборд">
+                        <img src="{{ asset('uploads/img/' ~ lot.pictureUrl) }}" width="730" height="548" alt="{{ lot.name }}">
                     </div>
 {#                    <p class="lot-item__category">Категория:<span>{{ lot.name }}</span></p>#}
                     <p class="lot-item__description">{{ lot.content }}</p>
