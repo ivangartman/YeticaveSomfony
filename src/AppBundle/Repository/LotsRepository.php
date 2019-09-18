@@ -32,4 +32,15 @@ class LotsRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
+    public function findAllLots($id)
+    {
+        return $this
+            ->createQueryBuilder('lots')
+            ->join('lots.category', 'category')
+            ->where('category.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -52,8 +52,8 @@
     <nav class="nav">
         <ul class="nav__list container">
             {% for category in categories %}
-            <li class="nav__item <?= ($pagecat === htmlspecialchars($category['id'])) ? 'nav__item--current' : '' ?>">
-                <a href="#">{{ category.name }}</a>
+            <li class="nav__item">
+                <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
             </li>
             {% endfor %}
         </ul>
