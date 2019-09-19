@@ -1,0 +1,46 @@
+{% extends '@App/layout.html.twig' %}
+
+{% block body %}
+
+    <nav class="nav">
+        <ul class="nav__list container">
+            {% for category in categories %}
+            <li class="nav__item">
+                <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+    <div class="container">
+        <section class="lots">
+            <h2>Результаты поиска по запросу «<span>{{ searchMessage }}</span>»</h2>
+            <ul class="lots__list">
+                <?php if ($search && $lots): ?>
+                {% for lot in lots %}
+                <li class="lots__item lot">
+                    <div class="lot__image">
+                        <img src="{{ asset('bundles/app/img/lot-1.jpg') }}" width="350" height="260" alt="{{ lot.category.name }}">
+                    </div>
+                    <div class="lot__info">
+                        <span class="lot__category">{{ lot.category.name }}</span>
+                        <h3 class="lot__title"><a class="text-link" href="{{ path('lot', { id: lot.id }) }}">{{ lot.name }}</a></h3>
+                        <div class="lot__state">
+                            <div class="lot__rate">
+                                <span class="lot__amount">Стартовая цена</span>
+                                <span class="lot__cost">{{ lot.price|price }}<b class="rub">р</b></span>
+                            </div>
+                            <div class="lot__timer timer {{ finishing(lot.dateEnd|date('d.m.Y')) }}">
+                                {{ lot.dateEnd|date('d.m.Y')|dateend }}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+                <?php else: ?>
+                <p>Ничего не найдено по вашему запросу</p>>
+                <?php endif ?>
+            </ul>
+        </section>
+    </div>
+
+{% endblock %}

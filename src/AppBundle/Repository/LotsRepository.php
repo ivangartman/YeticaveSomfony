@@ -43,4 +43,16 @@ class LotsRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
+    public function findSearch($search)
+    {
+        return $this
+            ->createQueryBuilder('lots')
+            ->join('lots.category', 'category')
+            ->where($this->createQueryBuilder('lots')->expr()->like('lots.name', ':search'))
+//            ->where($this->createQueryBuilder('lots')->expr()->like($this->createQueryBuilder('lots')->expr()->lower('lots.name'), ($this->createQueryBuilder('lots')->expr())->lower(':search')))
+//            ->where('lots.name = :search')
+            ->setParameter('search', $search)
+            ->getQuery()
+            ->getResult();
+    }
 }

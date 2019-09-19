@@ -30,6 +30,8 @@ class DefaultController extends Controller
         return $this->render('@App/default/index.html.twig', [
             'categories' => $categories,
             'lots' => $lots,
+//            'session' => '',
+            'searchMessage' => ''
         ]);
     }
 }

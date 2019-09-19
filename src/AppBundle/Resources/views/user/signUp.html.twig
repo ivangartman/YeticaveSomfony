@@ -1,0 +1,18 @@
+{% extends '@App/layout.html.twig' %}
+
+{% block body %}
+
+    <nav class="nav">
+        <ul class="nav__list container">
+            {% for category in categories %}
+            <li class="nav__item">
+                <a href="{{ path('allLot', { id: category.id }) }}">{{ category.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+
+
+
+{% endblock %}

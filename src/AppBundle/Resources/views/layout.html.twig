@@ -15,8 +15,8 @@
             <a class="main-header__logo" href="{{ path('homepage') }}">
                 <img src="{{ asset('bundles/app/img/logo.svg') }}" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
-            <form class="main-header__search" method="get" action="#" autocomplete="off">
-                <input type="search" name="search" placeholder="Поиск лота" value="<?= $search ?>">
+            <form class="main-header__search" method="get" action="{{ path('search') }}" autocomplete="off">
+                <input type="search" name="search" placeholder="Поиск лота" value="{{ searchMessage }}">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
             <a class="main-header__add-lot button" href="#">Добавить лот</a>

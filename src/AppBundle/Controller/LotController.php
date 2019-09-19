@@ -42,7 +42,8 @@ class LotController extends Controller
         return $this->render('@App/lot/lot.html.twig', [
             'categories' => $categories,
             'lots' => $lots,
-            'rates' => $rates
+            'rates' => $rates,
+            'searchMessage' => '',
         ]);
     }
 }

@@ -39,6 +39,7 @@ class AllLotsController extends Controller
             'lots'       => $lots,
             'catId'      => $id,
             'catName'    => $catName,
+            'searchMessage' => '',
         ]);
     }
 }
