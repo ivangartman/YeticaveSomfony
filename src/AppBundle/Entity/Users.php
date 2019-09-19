@@ -57,13 +57,6 @@ class Users
     /**
      * @var string
      *
-     * @ORM\Column(name="avatar", type="string", length=120, nullable=true)
-     */
-    private $avatar;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="contact", type="string", length=120, nullable=true)
      */
     private $contact;
@@ -173,30 +166,6 @@ class Users
     public function getPassword()
     {
         return $this->password;
-    }
-
-    /**
-     * Set avatar
-     *
-     * @param string $avatar
-     *
-     * @return Users
-     */
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Get avatar
-     *
-     * @return string
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
     }
 
     /**
